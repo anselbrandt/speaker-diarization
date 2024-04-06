@@ -1,26 +1,24 @@
-import wave
 import os
+import torchaudio
 
-def split_wav_by_timestamps(input_file, output_dir, timestamps, sortby='speaker'):
+def split_waveform_by_timestamps(
+    mono_waveform, sample_rate, output_dir, timestamps, sortby="timesamp"
+):
 
-    with wave.open(input_file, 'rb') as wf:
-        params = wf.getparams()
+    for i, (start, end, speaker) in enumerate(timestamps):
+        start_frame = int(start * sample_rate)
+        end_frame = int(end * sample_rate)
+        segment = mono_waveform[0:, start_frame:end_frame]
 
-        for i, (start_time, end_time, speaker) in enumerate(timestamps):
-            start_frame = int(start_time * params[2])
-            end_frame = int(end_time * params[2])
+        if sortby == "speaker":
+            output_file = os.path.join(output_dir, f"{speaker}_{start}_{end}.wav")
+        else:
+            output_file = os.path.join(output_dir, f"{start}_{end}_{speaker}.wav")
 
-            wf.setpos(start_frame)
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
 
-            chunk_data = wf.readframes(end_frame - start_frame)
-
-            if sortby=='timestamp':
-                output_file = os.path.join(output_dir, f'{speaker}_{start_time}_{end_time}.wav')
-            else:
-                output_file = os.path.join(output_dir, f'{start_time}_{end_time}_{speaker}.wav')
-            with wave.open(output_file, 'wb') as chunk_wf:
-                chunk_wf.setparams(params)
-                chunk_wf.writeframes(chunk_data)
+        torchaudio.save(output_file, segment, sample_rate)
 
 def aggregate_timestamps(timestamps):
     aggregated = []
