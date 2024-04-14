@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import os
 import torchaudio
 
@@ -32,3 +33,9 @@ def aggregate_timestamps(timestamps):
             aggregated.append(previous)
             previous = timestamp
     return aggregated
+
+
+def plot_waveform(waveform):
+    plt.figure()
+    plt.plot(waveform.t().numpy())
+    plt.show()
