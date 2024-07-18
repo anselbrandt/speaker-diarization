@@ -1,4 +1,6 @@
 .env
 .DS_Store
+__pycache__
+faster_whisper_output
 files
 out
