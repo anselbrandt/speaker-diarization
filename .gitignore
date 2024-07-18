@@ -4,3 +4,4 @@ __pycache__
 faster_whisper_output
 files
 out
+pyannote_output
