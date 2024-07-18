@@ -2,7 +2,7 @@ from faster_whisper import WhisperModel
 import time
 from datetime import timedelta
 import torchaudio
-from util import split_waveform_by_timestamps
+from utils import split_waveform_by_timestamps
 
 startTime = time.time()
 
