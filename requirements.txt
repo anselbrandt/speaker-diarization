@@ -1,0 +1,7 @@
+torch
+torchaudio
+faster-whisper
+transformers
+pandas
+setuptools
+nltk
